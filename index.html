@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- Bootstrap // auto-comment: CRTL+/ -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- FontAwsome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <style>
+        #output-wrapper{
+            min-height: 250px;
+        }
+    </style>
+    <!-- Open Layers-->
+        <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+        <style>
+            .map {
+                height: 400px;
+                width: 100%;
+            }
+        </style> 
+    <!-- /Open Layers -->
+
+     
+</head>
+<body>
+
+    <main class="container mt-5">
+        <!-- HEADER -->
+        <div class="row">
+            <div class="col">
+                <div class="jumbotron">
+                    <h1 class="display-4"><i class="fas fa-globe-europe"></i>Country App</h1>
+                    <p class="lead">Info for countries all around the world.</p>
+                    <hr class="my-4">
+                    <!-- Form -->
+                    <form class="form-inline" id="info">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="country" class="sr-only">Country</label>
+                            <input type="text" class="form-control" id="country" placeholder="Enter country name">
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Get Info</button>
+                    </form>
+                    <!-- /Form -->
+                </div>
+            </div>
+        </div>
+
+        <!--OUTPUT-->
+        <section class="row px-3 mb-5" id="output-wrapper">
+            <!-- 
+                Bootstrap has taken CSS rules and turned them into classes
+                BS4                         CSS
+                d-flex                      display: flex;
+                justify-content-center      justify-content: center;
+                align-items-center          align-items: center;
+             -->
+            <div class="col-8 px-0 bg-info d-flex justify-content-center align-items-center">
+                <div id="map" class="map"></div>
+            </div>
+            <div class="col border bg-light">
+                <div id="output">
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+    <!-- 
+        We put the input and the button in a form for 2 reasons
+        1. When a button is in a form, we can submit with Enter
+        2. By default, when a button is pressed in a form it submits all the form content
+        3. So, in our app we just need to handle the click of the button, because the submission
+            of the data happens automatically
+     -->
+
+    <!-- <i class="fab fa-facebook-square"></i>
+
+    <form id="info">
+        <input type="text" name="country" id="country">
+        <button>Get info</button>
+    </form>
+    <div id="output"></div> -->
+    
+    <!-- JQuery -->
+    <script
+		src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous">
+    </script>
+    <!-- Open Layers -->
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    <!-- App -->
+    <script>
+        function init($){
+            function onSuccess(data){
+                // 5) Get results and manipulate
+                let countryData = data[0];
+                let content = `
+                    <p>Name: ${countryData.name}</p>
+                    <p>Capital: ${countryData.capital}</p>
+                    <p>Population: ${countryData.population}</p>
+                    <img width="200px" src="${countryData.flag}"/>
+                `;
+                // Add data to content
+                $('#output').html(content); //set
+                console.log($('#output').html()); // get // to idio kai me to value !! me val(sth) gemizw me val() pairnw !!!!!!!!!1
+                $('#map').html("");
+                showMap(countryData);
+            }
+            function onError(error){}
+
+            function handleInput(input){
+                // 3.2) Convert to lowercase
+                input = input.toLowerCase();
+
+                // 3.3)Remove extra spaces
+                input = input.trim();
+
+                return input;
+
+            }
+
+            function showMap(countryData) {
+                //Show Map
+                var map = new ol.Map({
+                    target: 'map',
+                    layers: [
+                        new ol.layer.Tile({
+                            source: new ol.source.OSM()
+                        })
+                    ],
+                    view: new ol.View({
+                        center: ol.proj.fromLonLat([countryData.latlng[1],countryData.latlng[0]]),
+                        zoom: 4
+                    })
+                });
+                return map;
+            }
+
+            function handleSubmit(event){ 
+                // PROROXI addEventListener, Onclick, OnSubmit etc lead to a function that takes "event" as parameter!!!!!!
+                event.preventDefault(); // oi formes by default exoun mia logiki tou na stelnoun to content
+                // ekei pou leei to action (Diagrafetai auto pou grapsame sti forma kai stelnetai). 
+                // We want to prevent that here .... Kanontas to preventDefault twra patame to koumpi ;h enter kai de ginetai tipota
+                // Tha orisoume emeis ti ginetai !!!!!!!!!!!!!!!!!!!!!!!!
+
+                // 3) Get input value
+                let countryName = $('#country').val();
+                    // 3.1) Check length of input
+                    if ( countryName.length < 2){
+                        console.log("Country name invalid");
+                        return false; // stamatame tin ektelesi tis function handleSubmit, de thelw na kanw axrista ajax
+                    }
+                    
+                countryName = handleInput(countryName);
+
+                let options = {
+                    url: `https://restcountries.eu/rest/v2/name/${countryName}`, // auto to $ DEN EXEI SXESI me jQuery !!!!!!!!!!!!!!!!!! Einai tis JavaScript
+                    success: onSuccess,
+                    error: onError
+                }
+                // Make ajax call with imnput value
+                $.ajax(options);
+            }
+            // 2)Add (not just click but) submit handler
+            $('#info').on("submit",handleSubmit);
+
+            
+                
+            
+            
+        }
+        // 1)On document ready initialize
+        jQuery(document).ready(init);
+        </script>
+</body>
+</html>

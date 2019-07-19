@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JSON</title>
+</head>
+<body>
+    <h1>JSON</h1>
+    <script>
+         let profile = {
+        name: "Kostas",
+        surname: "Minaidis",
+        isInstructor: true,
+        yearsOfExperience: 10,
+        hobbies: [ "films", "books" ]
+        };
+
+        // Javascript Notation Object
+        //JSON: Value --> String
+
+        let str = JSON.stringify(profile);
+        console.log(str);
+        console.log("Type of:", typeof str);
+        console.log("Length:",str.length);
+
+        //JSON: String --> Value
+        let obj = JSON.parse(str);
+        console.log(obj);
+        console.log("Type of:", typeof obj);
+        console.log("Length:",obj.length);
+
+        document.write(obj.name + "<br>");
+        document.write(obj.yearsOfExperience > 10);
+
+    </script>
+</body>
+</html>
+

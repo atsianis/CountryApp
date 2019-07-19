@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Country App</title>
+    <!-- Bootstrap // auto-comment: CRTL+/ -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- FontAwsome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+<body>
+    <h1 class="bg-info">
+        <i class="fab fa-facebook-square"></i>
+        Country App
+    </h1>
+    <button>Get info</button>
+
+    <div id="output">
+       
+    </div>
+    
+
+
+    <!-- jQuery -->
+    <script
+		src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous">
+    </script>
+    <script>
+        // jQuery()
+        // $()
+        // to idio pragma, wstoso epeidi polles fores to $ dhmiourhei conflicts me alles vivliothikes, xrisimopoioume
+        // to jQuery
+        function init($){ // to init periexei oli tin efaromgi mas, gi auto kai to kaloume afou to document einai ready
+            //console.log("Ready",$); // pairnonts to $ mesa sti function mporoume na xrhsimopoihsoume ti jQuery me to $ xwris
+            // na yparxei to conflict pou leme parakatw. san na gemizoume ti function me ton eauto tis wste na sigoureutoume oti
+            // tha xrhsimopoihsei th jQuery
+            function onSuccess(data){ // an doume tin console mas epistrefetai ena array me ena stoixeio pou einai object
+                console.log(data); // me sketo concole.log(data) mas epistrefei mono to flag url. pou einai 
+                // apo to prwto stoixeio tou array (diladi to object), to stoixeio flag
+                // [{...},{...},{...}] auti ti morfi exei to sygkekrimeno json
+                let content = `
+                <p>Name:${data[0].name}</p>
+                <p>Capital:${data[0].capital}</p>
+                <p>Population:${data[0].population}</p>
+                <img width="200px" src="${data[0].flag}" />
+                `; // PROSOXI: ta backtics mas epitrepoun new lines klp san na egrafa html kanonika !!! Enw me mona autakia
+                // tha eprepe na xrisimopoiisw escape characters klp klp
+                // let phrase = `My name is ${name} ${surname}`; 
+                // ${} --> JavaScript Expression !!! O,ti yparxei mesa sto $ ginetai evaluated !!!!!!!!
+
+                console.log(content);
+                //Append content as HTML to he div #output
+                //document.querySelector()
+                //ELEMENT.innerHTML = '...'
+                //THIS IS THE JS WAY TO DO IT
+
+                // let mydiv = document.querySelector('#output');
+                // mydiv.innerHTML = content;
+
+
+                //THIS IS THE jQuery WAY TO DO IT
+                let out = $("#output");
+                out.html(content).css({ border: "2px solid black", backgroundColor: "#f0f0f0"}); // ;h kai se mia grammi $("#output").html(content);
+                // PROSOXI !! Sti css kanonika tha grafame backround-color. Sti jQuery omws camelCase
+                // CSS: background-color | font-size
+                //jQuery: backroundColor | fontSize
+
+            }
+            //Ajax Options:
+            let options = { // auta ta url kai success einai fefault pragmata pou perimenei na dei to ajax -> url,success... yparxei kai error
+            // vlepe ajax documentation
+                url:"https://restcountries.eu/rest/v2/name/greece",
+                success: onSuccess
+            }
+            // let options2 = {
+            //     url:"https://restcountries.eu/rest/v2/name/japan",
+            //     success: onSuccess
+            // }
+
+            // tha perimene kaneis na dei to 1, na dei to apotelesma tis ajax kai meta na dei to 2, wstoso opws eipame
+            // i ajax einai asynchronous, opote tha dw to 1, to 2 kai otan h ajax exei etoimo to apotelesma tha mou to epistrepsei
+            console.log(1);
+            //$.ajax( options );
+            //$.ajax( options2 );
+            console.log(2);
+
+            // Get button
+            let button = $("button");
+            // Add click handler
+            function handleClick(){
+                // Onclick --> ajax()
+                $.ajax(options);
+            }
+            button.click( handleClick );
+            
+        };
+        jQuery( document ).ready( init ); 
+        // document -> build in object tis javascript pou periexei olo to eggrafo
+        // i jQuery/javascript doylevei genikws me stoixeia tou html (html elements)
+        // ready --> otan to document exei fortwsei trexe mou auto to function --> init
+        // i ready de leitourgei mono me to document, mporoume na tsekaroume px an kapoio image exei fortwsei
+        // pc $('img').ready(function) ;h jQuery('img').ready(function)
+    </script>
+</body>
+</html>

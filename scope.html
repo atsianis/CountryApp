@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Scope & Hoisting</title>
+</head>
+<body>
+    <h1>Scope and Hoisting in JavaScript</h1>
+    <script>
+        // Hoisting : Functions are autmatically moved at the top of the program
+        // before execution:
+        display("Hello");
+
+        function display(msg){
+            console.log(msg);
+        }
+
+        console.log(message);
+        var message = "What?";
+        // JavaScript does the following:
+        // var message; --> moved at the top of the programm --> default value undefined
+        // message = what; --> stays at the position we initially put it
+
+        // ARA kanonas
+        // Prwta dilwnoume tis metavlites kai tis dilwnoume stin arxi tou programmatos
+
+
+        var config = "critical";
+        // 10.000 lines of code in between...
+        var config = "severe";
+        console.log(config); // it will print "severe"
+
+        let password = 1234;
+        //let password = 5678; 
+        // we will have an error in the console
+        // that's why we choose let over var
+
+        // we can catch the previous error with a try-catch
+
+        let a = 1234;
+        try{
+            let a = 4567;
+        }catch(e){
+            console.log(e); // code will not stop now
+        }
+
+        console.log(a);
+
+        // variables declarated with var are function scoped. and thus available outdside of block statements:
+        if (true){
+            var something = "Something";
+        }
+        console.log(something); // we CAN print it here. Var's are 'locked' only when they are in a function.
+        // See beneath
+
+        function main(){
+            var priv = "Private";
+        }
+        //console.log("priv:", priv); //CANT find the variable 
+
+        // let & const create block-scoped and function scoped variables:
+        if (true){
+            let priv2 = 2;
+            const priv3 = 3;
+        }
+
+
+        //const enables us to declare variables, assign a value to them
+        //and prevent us from changing the value
+        const server = "Linux";
+        const = "Windows"; // Error in console. Can't change the value of a constant
+
+
+
+    
+    </script>
+</body>
+</html>
